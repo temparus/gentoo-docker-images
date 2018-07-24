@@ -23,6 +23,11 @@ ORG=${ORG:-gentoo}
 if [[ "${ARCH}" == "x86" ]]; then
 	MICROARCH="i686"
 	BOOTSTRAP="multiarch/alpine:x86-v3.7"
+elif [[ "${ARCH}" == "arm64" ]]; then
+	MICROARCH="${ARCH}"
+	NAME="${NAME}-arm64"
+elif [[ "${ARCH}" == "arm" ]]; then
+	MICROARCH="armv7a"
 else
 	MICROARCH="${ARCH}"
 fi
@@ -32,5 +37,5 @@ if [[ -n "${SUFFIX}" ]]; then
 	SUFFIX="-${SUFFIX}"
 fi
 
-docker build --build-arg ARCH="${ARCH}" --build-arg MICROARCH="${MICROARCH}" --build-arg BOOTSTRAP="${BOOTSTRAP}" --build-arg SUFFIX="${SUFFIX}"  -t "${ORG}/${TARGET}:${VERSION}" -f "${NAME}.Dockerfile" .
-docker tag "${ORG}/${TARGET}:${VERSION}" "${ORG}/${TARGET}:latest"
+docker build --build-arg ARCH="${ARCH}" --build-arg MICROARCH="${MICROARCH}" --build-arg BOOTSTRAP="${BOOTSTRAP}" --build-arg SUFFIX="${SUFFIX}"  -t "${ORG}/gentoo-${TARGET}:${VERSION}" -f "${NAME}.Dockerfile" .
+docker tag "${ORG}/gentoo-${TARGET}:${VERSION}" "${ORG}/${TARGET}:latest"
